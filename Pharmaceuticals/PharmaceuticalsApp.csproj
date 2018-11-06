@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B0BC2E91-4F1A-467D-8634-8EFF4E1F500E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Pharmaceuticals</RootNamespace>
-    <AssemblyName>Pharmaceuticals</AssemblyName>
+    <RootNamespace>PharmaceuticalsApp</RootNamespace>
+    <AssemblyName>PharmaceuticalsApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,8 +35,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,7 +64,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Models\Helpers\PropertyValidateModel.cs" />
+    <Compile Include="Models\Interfaces\IPrescription.cs" />
+    <Compile Include="Models\Interfaces\IPrescriptionItem.cs" />
+    <Compile Include="Models\Prescription.cs" />
+    <Compile Include="Models\PrescriptionItem.cs" />
+    <Compile Include="Services\Helpers\BaseRepository.cs" />
+    <Compile Include="Services\Interfaces\IPharmaceuticalRepository.cs" />
+    <Compile Include="Services\Interfaces\ISpecialRequirementRepository.cs" />
+    <Compile Include="Services\PharmaceuticalRepository.cs" />
+    <Compile Include="Services\SpecialRequirementRepository.cs" />
+    <Compile Include="Models\Helpers\ObservableObject.cs" />
+    <Compile Include="Ui\Helpers\RelayCommand.cs" />
+    <Compile Include="Ui\ViewModel\CommentViewModel.cs" />
+    <Compile Include="Ui\ViewModel\Interfaces\IViewModel.cs" />
+    <Compile Include="Ui\ViewModel\MainViewModel.cs" />
+    <Compile Include="Ui\ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="Ui\View\CommentView.xaml.cs">
+      <DependentUpon>CommentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\View\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Ui\View\CommentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -63,10 +98,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Entities\Context.cs" />
+    <Compile Include="Entities\Pharmaceutical.cs" />
+    <Compile Include="Entities\SpecialRequirement.cs" />
+    <Compile Include="Ui\View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Ui\View\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -86,6 +128,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -94,5 +137,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

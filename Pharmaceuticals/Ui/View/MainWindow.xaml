@@ -1,0 +1,16 @@
+﻿<Window x:Class="PharmaceuticalsApp.Ui.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:view="clr-namespace:PharmaceuticalsApp.Ui.View"
+        xmlns:viewModel="clr-namespace:PharmaceuticalsApp.Ui.ViewModel"
+        mc:Ignorable="d"
+        Title="Pharmaceuticals" MinHeight="768" MinWidth="1024">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:MainViewModel}">
+            <view:MainView />
+        </DataTemplate>
+    </Window.Resources>
+    <ContentControl Content="{Binding CurrentViewModel}" />
+</Window>

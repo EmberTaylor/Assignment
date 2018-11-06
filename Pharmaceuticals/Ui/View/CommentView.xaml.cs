@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Pharmaceuticals
+namespace PharmaceuticalsApp.Ui.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CommentView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CommentView : UserControl
     {
-        public MainWindow()
+        public CommentView()
         {
             InitializeComponent();
         }

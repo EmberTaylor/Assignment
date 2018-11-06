@@ -1,0 +1,153 @@
+﻿<UserControl x:Class="PharmaceuticalsApp.Ui.View.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PharmaceuticalsApp.Ui.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="768" d:DesignWidth="1024">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition MinHeight="70" Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Pharmaceutical Name" />
+        <TextBlock Grid.Column="1" Grid.Row="0" Text="Rec Daily Dose" />
+        <TextBlock Grid.Column="2" Grid.Row="0" Text="Prescribed Daily Dose" />
+        <TextBlock Grid.Column="3" Grid.Row="0" Text="Description and special details" />
+        <TextBlock Grid.Column="4" Grid.Row="0" Text="Duration" />
+        <TextBlock Grid.Column="5" Grid.Row="0" Text="Add Comment" />
+
+        <ComboBox Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" HorizontalContentAlignment="Center"
+                  ItemsSource="{Binding Pharmaceuticals}" DisplayMemberPath="PharmaceuticalName"
+                  SelectedItem="{Binding SelectedPharmaceutical, 
+                                         UpdateSourceTrigger=PropertyChanged,
+                                         ValidatesOnDataErrors=True, 
+                                         NotifyOnValidationError=True}" />
+        <TextBlock Grid.Column="1" Grid.Row="1"  VerticalAlignment="Top"
+                   Text="{Binding SelectedPharmaceutical.RecommendedDailyDose}" />
+        <TextBox Grid.Column="2" Grid.Row="1" VerticalAlignment="Top"
+                 Text="{Binding PrescribedDailyDose,
+                                UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, 
+                                NotifyOnValidationError=True}" />
+        <TextBlock Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" TextAlignment="Center" 
+                   TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="100"
+                   Text="{Binding SelectedPharmaceutical.FormattedDescription, Mode=OneWay}"/>
+        <TextBox Grid.Column="4" Grid.Row="1" VerticalAlignment="Top"
+                 Text="{Binding Duration,
+                                UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, 
+                                NotifyOnValidationError=True}" />
+        <CheckBox Grid.Column="5" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"
+                  IsChecked="{Binding AddComment}" />
+        <Button Grid.Column="6" Grid.Row="1" VerticalAlignment="Top" Content="Add"
+                Command="{Binding AddButton}" />
+
+        <CheckBox Grid.Column="1" Grid.Row="2" FlowDirection="RightToLeft" HorizontalAlignment="Center"
+                  IsChecked="{Binding RecomendOverride}" 
+                  Visibility="{Binding Path=DisplayRddOverride, 
+                                       Converter={StaticResource BoolToVis}}">
+            <TextBlock FlowDirection="LeftToRight" Text="Overwrite RDD:"/>
+        </CheckBox>
+
+        <DataGrid Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="3" Grid.RowSpan="2"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
+                  ItemsSource="{Binding Path=Prescription.PrescriptionItems, Mode=OneWay}" 
+                  SelectedItem="{Binding Path=SelectedPrescriptionItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product Name" Width="Auto" 
+                                    Binding="{Binding Path=PharmaceuticalName}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Duration" Width="Auto" 
+                                    Binding="{Binding Path=Duration}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Prescribed Daily Dose" Width="Auto" 
+                                    Binding="{Binding Path=PrescribedDailyDose}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Number Of Containers" Width="Auto" 
+                                    Binding="{Binding Path=NumberOfContainers}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="OTC" Width="Auto" 
+                                    Binding="{Binding Path=AvailableOverTheCounter}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Comments" Width="Auto" 
+                                    Binding="{Binding Path=Comments}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Column="6" Grid.Row="3" Content="Remove"
+                Command="{Binding RemoveButton}"/>
+
+        <Button Grid.Column="6" Grid.Row="4" Content="Clear" VerticalAlignment="Top"
+                Command="{Binding ClearButton}"/>
+
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Right"
+                   Text="Total Number of Prescription Items:"/>
+        <TextBlock Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left"
+                   Text="{Binding Path=Prescription.NumberOfPharmaceuticals}" />
+
+        <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Right"
+                   Text="Total Number of Containers:"/>
+        <TextBlock Grid.Column="5" Grid.Row="5" HorizontalAlignment="Left"
+                   Text="{Binding Prescription.NumberOfContainers}" />
+
+        <Button Grid.Column="6" Grid.Row="5" Content="Exit"
+                Command="{Binding ExitButton}"/>
+
+    </Grid>
+</UserControl>
