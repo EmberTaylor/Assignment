@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,6 +13,12 @@ namespace PharmaceuticalsApp.Ui.ViewModel
 {
     public class MainViewModel : ObservableObject, IViewModel
     {
+        //todo:
+        //On right clicking the control that displays the prescription items 
+        //a context menu should be displayed that allows the user to:
+        //-Edit the comments of the selected prescription item.
+        //-Decrement the prescribed daily dose by one for the selected prescription item.
+
         private ICommand addButton;
         public ICommand AddButton
         {
@@ -21,7 +28,7 @@ namespace PharmaceuticalsApp.Ui.ViewModel
                 {
                     addButton = new RelayCommand
                     (
-                        r => AddPharmaceutical(),
+                        r => Add(),
                         r => SelectedPharmaceutical != null &&
                              TryValidate() &&
                              ((recomendOverride &&
@@ -83,6 +90,23 @@ namespace PharmaceuticalsApp.Ui.ViewModel
             }
         }
 
+        private ICommand cancelCommentButton;
+        public ICommand CancelCommentButton
+        {
+            get
+            {
+                if (cancelCommentButton == null)
+                {
+                    cancelCommentButton = new RelayCommand
+                    (
+                        r => CancelComment(),
+                        r => DisplayComment
+                    ); 
+                }
+                return cancelCommentButton;
+            }
+        }
+
         private IEnumerable<Pharmaceutical> pharmaceuticals;
         public IEnumerable<Pharmaceutical> Pharmaceuticals
         {
@@ -114,6 +138,7 @@ namespace PharmaceuticalsApp.Ui.ViewModel
                 {
                     selectedPharmaceutical = value;
                     PrescribedDailyDose = Convert.ToInt32(selectedPharmaceutical?.RecommendedDailyDose);
+                    Comment = selectedPharmaceutical?.FormattedDescription;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(DisplayRddOverride));
                 }
@@ -155,7 +180,7 @@ namespace PharmaceuticalsApp.Ui.ViewModel
         }
 
         private int prescribedDailyDose;
-        [Range(1, int.MaxValue, ErrorMessage = "Please Enter a Value")]
+        [Range(1, int.MaxValue , ErrorMessage = "Please Enter a Value")]
         public int PrescribedDailyDose
         {
             get
@@ -212,6 +237,50 @@ namespace PharmaceuticalsApp.Ui.ViewModel
             }
         }
 
+        private string comment;
+        [Required]
+        public string Comment
+        {
+            get
+            {
+                return comment;
+            }
+            set
+            {
+                if (comment != value)
+                {
+                    comment = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool displayComment = false;
+        public bool DisplayComment
+        {
+            get
+            {
+                return displayComment;
+            }
+            private set
+            {
+                if (displayComment != value)
+                {
+                    displayComment = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(EnableControls));
+                }
+            }
+        }
+
+        public bool EnableControls
+        {
+            get
+            {
+                return !DisplayComment;
+            }
+        }
+
         public bool DisplayRddOverride
         {
             get
@@ -245,16 +314,54 @@ namespace PharmaceuticalsApp.Ui.ViewModel
             }
         }
 
+        private string OriginalComment;
+
         private readonly IPharmaceuticalRepository pharmaceuticalRepository;
 
         public MainViewModel(IPharmaceuticalRepository pharmaceuticalRepository)
         {
             this.pharmaceuticalRepository = pharmaceuticalRepository;
-            Pharmaceuticals = this.pharmaceuticalRepository.Get();
+            Pharmaceuticals = this.pharmaceuticalRepository.Get().OrderBy(p => p.PharmaceuticalName);
+        }
+
+        private void Add()
+        {
+            if (SelectedPharmaceutical == null)
+            {
+                throw new NullReferenceException("No Pharmaceutical selected to add to Prescription");
+            }
+
+            //if a comment is needed or requested show dialog
+            if ((RecomendOverride || AddComment) 
+                && !DisplayComment)
+            {
+                ShowComment();
+                return;
+            }
+            HideComment();
+            AddPharmaceutical();
+        }
+
+        private void ShowComment()
+        {
+            OriginalComment = Comment;
+            DisplayComment = true;
+        }
+
+        private void HideComment()
+        {
+            DisplayComment = false;
+        }
+
+        private void CancelComment()
+        {
+            Comment = OriginalComment;
+            HideComment();
         }
 
         private void AddPharmaceutical()
         {
+
             if (SelectedPharmaceutical == null)
             {
                 throw new NullReferenceException("No Pharmaceutical selected to add to Prescription");
@@ -267,8 +374,9 @@ namespace PharmaceuticalsApp.Ui.ViewModel
                 Duration,
                 SelectedPharmaceutical.SpecialRequirement.ContainerSize,
                 SelectedPharmaceutical.SpecialRequirement.AvailableOverTheCounter,
-                SelectedPharmaceutical.FormattedDescription
+                Comment.EndsWith(";" + Environment.NewLine) ? Comment : Comment + ";" + Environment.NewLine
             );
+
             OnPropertyChanged(nameof(Prescription));
             OnPropertyChanged(nameof(Prescription.PrescriptionItems));
             ClearUi();

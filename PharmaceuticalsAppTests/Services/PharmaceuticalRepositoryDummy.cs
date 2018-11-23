@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 
 namespace PharmaceuticalsAppTests
 {
+    //dummy to simulate database
     internal class PharmaceuticalRepositoryDummy : IPharmaceuticalRepository
     {
         private ICollection<Pharmaceutical> context = new List<Pharmaceutical>()

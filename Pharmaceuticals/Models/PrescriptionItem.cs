@@ -58,6 +58,7 @@ namespace PharmaceuticalsApp.Models
         {
             get
             {
+                //round up the number of containers as can't have partial or overfull
                 var number = (int)Math.Ceiling((PrescribedDailyDose * Duration) / (double)ContainerSize);
                 return number <= 0 ? 1 : number;
             }

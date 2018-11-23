@@ -29,6 +29,7 @@ namespace PharmaceuticalsAppTests.Models
         [TestMethod()]
         public void AddExistingPrescriptionItemTest()
         {
+            //todo write test
             Assert.Fail();
         }
 

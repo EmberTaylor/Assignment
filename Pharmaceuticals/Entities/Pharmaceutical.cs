@@ -31,6 +31,7 @@ namespace PharmaceuticalsApp.Entities
         public virtual SpecialRequirement SpecialRequirement { get; set; }
 
         [NotMapped]
+        //Converts the description and special requirments into a readable format
         public string FormattedDescription
         {
             get
@@ -71,6 +72,7 @@ namespace PharmaceuticalsApp.Entities
             }  
         }
 
+        //checks if a pharmaceutical is messured in ml
         private string GetMl()
         {
             switch (MedicationType)

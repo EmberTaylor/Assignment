@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 
 namespace SpecialRequirementsAppTests.Dummys
 {
+    //dummy to simulate database
     internal class SpecialRequirementRepositoryDummy : ISpecialRequirementRepository
     {
         private ICollection<SpecialRequirement> context = new List<SpecialRequirement>()

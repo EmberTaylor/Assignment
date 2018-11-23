@@ -7,147 +7,181 @@
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="1024">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition MinHeight="70" Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition />
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
+        <Grid Background="LightGray" Panel.ZIndex="1" 
+              HorizontalAlignment="Center" 
+              VerticalAlignment="Center"
+              MinWidth="400"
+              MinHeight="200"
+              Visibility="{Binding Path=DisplayComment, 
+                                   Converter={StaticResource BoolToVis}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Add Comment" TextAlignment="Center" />
+            <TextBox Grid.Row="1" Grid.ColumnSpan="2"  Margin="0" TextWrapping="Wrap"
+                     VerticalAlignment="Stretch" Height="Auto" MaxHeight="200"
+                     Text="{Binding Comment, 
+                                    UpdateSourceTrigger=PropertyChanged,
+                                    ValidatesOnDataErrors=True, 
+                                    NotifyOnValidationError=True}" />
+            <Button Grid.Row="2" Grid.Column="0" Height="20" Content="Add" 
+                    IsDefault="True"
+                    Command="{Binding AddButton}" />
+            <Button Grid.Row="2" Grid.Column="1" Height="20" Content="Cancel" 
+                    IsCancel="True"
+                    Command="{Binding CancelCommentButton}" />
+        </Grid>
+        <Grid Panel.ZIndex="0" IsEnabled="{Binding EnableControls}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition MinHeight="70" Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Pharmaceutical Name" />
-        <TextBlock Grid.Column="1" Grid.Row="0" Text="Rec Daily Dose" />
-        <TextBlock Grid.Column="2" Grid.Row="0" Text="Prescribed Daily Dose" />
-        <TextBlock Grid.Column="3" Grid.Row="0" Text="Description and special details" />
-        <TextBlock Grid.Column="4" Grid.Row="0" Text="Duration" />
-        <TextBlock Grid.Column="5" Grid.Row="0" Text="Add Comment" />
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-        <ComboBox Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" HorizontalContentAlignment="Center"
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Pharmaceutical Name" />
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="Rec Daily Dose" />
+            <TextBlock Grid.Column="2" Grid.Row="0" Text="Prescribed Daily Dose" />
+            <TextBlock Grid.Column="3" Grid.Row="0" Text="Description and special details" />
+            <TextBlock Grid.Column="4" Grid.Row="0" Text="Duration" />
+            <TextBlock Grid.Column="5" Grid.Row="0" Text="Add Comment" />
+
+            <ComboBox Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" HorizontalContentAlignment="Center"
                   ItemsSource="{Binding Pharmaceuticals}" DisplayMemberPath="PharmaceuticalName"
                   SelectedItem="{Binding SelectedPharmaceutical, 
                                          UpdateSourceTrigger=PropertyChanged,
                                          ValidatesOnDataErrors=True, 
                                          NotifyOnValidationError=True}" />
-        <TextBlock Grid.Column="1" Grid.Row="1"  VerticalAlignment="Top"
+            <TextBlock Grid.Column="1" Grid.Row="1"  VerticalAlignment="Top"
                    Text="{Binding SelectedPharmaceutical.RecommendedDailyDose}" />
-        <TextBox Grid.Column="2" Grid.Row="1" VerticalAlignment="Top"
+            <TextBox Grid.Column="2" Grid.Row="1" VerticalAlignment="Top"
                  Text="{Binding PrescribedDailyDose,
                                 UpdateSourceTrigger=PropertyChanged,
                                 ValidatesOnDataErrors=True, 
                                 NotifyOnValidationError=True}" />
-        <TextBlock Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" TextAlignment="Center" 
+            <TextBlock Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" TextAlignment="Center" 
                    TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="100"
                    Text="{Binding SelectedPharmaceutical.FormattedDescription, Mode=OneWay}"/>
-        <TextBox Grid.Column="4" Grid.Row="1" VerticalAlignment="Top"
+            <TextBox Grid.Column="4" Grid.Row="1" VerticalAlignment="Top"
                  Text="{Binding Duration,
                                 UpdateSourceTrigger=PropertyChanged,
                                 ValidatesOnDataErrors=True, 
                                 NotifyOnValidationError=True}" />
-        <CheckBox Grid.Column="5" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"
+            <CheckBox Grid.Column="5" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"
                   IsChecked="{Binding AddComment}" />
-        <Button Grid.Column="6" Grid.Row="1" VerticalAlignment="Top" Content="Add"
+            <Button Grid.Column="6" Grid.Row="1" VerticalAlignment="Top" Content="Add"
                 Command="{Binding AddButton}" />
 
-        <CheckBox Grid.Column="1" Grid.Row="2" FlowDirection="RightToLeft" HorizontalAlignment="Center"
+            <CheckBox Grid.Column="1" Grid.Row="2" FlowDirection="RightToLeft" HorizontalAlignment="Center"
                   IsChecked="{Binding RecomendOverride}" 
                   Visibility="{Binding Path=DisplayRddOverride, 
                                        Converter={StaticResource BoolToVis}}">
-            <TextBlock FlowDirection="LeftToRight" Text="Overwrite RDD:"/>
-        </CheckBox>
+                <TextBlock FlowDirection="LeftToRight" Text="Overwrite RDD:"/>
+            </CheckBox>
 
-        <DataGrid Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="3" Grid.RowSpan="2"
+            <DataGrid Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="3" Grid.RowSpan="2"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
                   ItemsSource="{Binding Path=Prescription.PrescriptionItems, Mode=OneWay}" 
                   SelectedItem="{Binding Path=SelectedPrescriptionItem}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Product Name" Width="Auto" 
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Product Name" Width="Auto" 
                                     Binding="{Binding Path=PharmaceuticalName}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Left" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Duration" Width="Auto" 
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Duration" Width="Auto" 
                                     Binding="{Binding Path=Duration}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Prescribed Daily Dose" Width="Auto" 
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Prescribed Daily Dose" Width="Auto" 
                                     Binding="{Binding Path=PrescribedDailyDose}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Number Of Containers" Width="Auto" 
+                    <DataGridTextColumn Header="Number Of Containers" Width="Auto" 
                                     Binding="{Binding Path=NumberOfContainers}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="OTC" Width="Auto" 
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="OTC" Width="Auto" 
                                     Binding="{Binding Path=AvailableOverTheCounter}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Left" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Comments" Width="Auto" 
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Comments" Width="Auto" 
                                     Binding="{Binding Path=Comments}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Left" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
 
-        <Button Grid.Column="6" Grid.Row="3" Content="Remove"
+            <Button Grid.Column="6" Grid.Row="3" Content="Remove"
                 Command="{Binding RemoveButton}"/>
 
-        <Button Grid.Column="6" Grid.Row="4" Content="Clear" VerticalAlignment="Top"
+            <Button Grid.Column="6" Grid.Row="4" Content="Clear" VerticalAlignment="Top"
                 Command="{Binding ClearButton}"/>
 
-        <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Right"
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Right"
                    Text="Total Number of Prescription Items:"/>
-        <TextBlock Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left"
+            <TextBlock Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left"
                    Text="{Binding Path=Prescription.NumberOfPharmaceuticals}" />
 
-        <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Right"
+            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Right"
                    Text="Total Number of Containers:"/>
-        <TextBlock Grid.Column="5" Grid.Row="5" HorizontalAlignment="Left"
+            <TextBlock Grid.Column="5" Grid.Row="5" HorizontalAlignment="Left"
                    Text="{Binding Prescription.NumberOfContainers}" />
 
-        <Button Grid.Column="6" Grid.Row="5" Content="Exit"
+            <Button Grid.Column="6" Grid.Row="5" Content="Exit"
                 Command="{Binding ExitButton}"/>
 
+        </Grid>
     </Grid>
 </UserControl>

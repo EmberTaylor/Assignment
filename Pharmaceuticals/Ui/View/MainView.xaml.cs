@@ -2,9 +2,7 @@
 
 namespace PharmaceuticalsApp.Ui.View
 {
-    /// <summary>
-    /// Interaction logic for MainView.xaml
-    /// </summary>
+    //todo add tooltips
     public partial class MainView : UserControl
     {
         public MainView()
