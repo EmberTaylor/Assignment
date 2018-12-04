@@ -61,14 +61,12 @@ namespace PharmaceuticalsApp.Ui.ViewModel
         }
 
         private readonly IPharmaceuticalRepository pharmaceuticalRepository;
-        private readonly ISpecialRequirementRepository specialRequirementRepository;
 
         public MainWindowViewModel()
         {
             var context = new Context();
 
             pharmaceuticalRepository = new PharmaceuticalRepository(context);
-            specialRequirementRepository = new SpecialRequirementRepository(context);
 
             ChangeViewModel(typeof(MainViewModel));
     }

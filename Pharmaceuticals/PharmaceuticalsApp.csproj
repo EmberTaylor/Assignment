@@ -71,25 +71,15 @@
     <Compile Include="Models\PrescriptionItem.cs" />
     <Compile Include="Services\Helpers\BaseRepository.cs" />
     <Compile Include="Services\Interfaces\IPharmaceuticalRepository.cs" />
-    <Compile Include="Services\Interfaces\ISpecialRequirementRepository.cs" />
     <Compile Include="Services\PharmaceuticalRepository.cs" />
-    <Compile Include="Services\SpecialRequirementRepository.cs" />
     <Compile Include="Models\Helpers\ObservableObject.cs" />
     <Compile Include="Ui\Helpers\RelayCommand.cs" />
-    <Compile Include="Ui\ViewModel\CommentViewModel.cs" />
     <Compile Include="Ui\ViewModel\Interfaces\IViewModel.cs" />
     <Compile Include="Ui\ViewModel\MainViewModel.cs" />
     <Compile Include="Ui\ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="Ui\View\CommentView.xaml.cs">
-      <DependentUpon>CommentView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Ui\View\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Ui\View\CommentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Ui\View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

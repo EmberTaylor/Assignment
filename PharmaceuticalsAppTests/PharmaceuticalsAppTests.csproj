@@ -57,7 +57,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Services\PharmaceuticalRepositoryDummy.cs" />
-    <Compile Include="Services\SpecialRequirementRepositoryDummy.cs" />
     <Compile Include="Entities\PharmaceuticalTests.cs" />
     <Compile Include="Models\PrescriptionItemTests.cs" />
     <Compile Include="Models\PrescriptionTests.cs" />
